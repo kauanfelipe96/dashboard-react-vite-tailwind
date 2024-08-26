@@ -11,21 +11,14 @@ const data = {
     carro: "Comet",
     categoria: "Esportivo",
     classe: "S+",
-    placa:  "AHV-4169",
+    placa: "AHV-4169",
     velocidade: "200 km/h",
-    aceleracao: 4000,
-    tracao: 2400,
-    frenagem: 2000,
+    aceleracao: "4000 m/s²",
+    tracao: ["4x2", "4x4", "AWD", "dianteira", "traseira"],
+    frenagem: ["disco", "tambor", "ABS"],
+    nota: 89,
+    novaClase: "A",
 };
-
-const data02 = [
-    { name: "Group A", value: 2400 },
-    { name: "Group B", value: 4567 },
-    { name: "Group C", value: 1398 },
-    { name: "Group D", value: 9800 },
-    { name: "Group E", value: 3908 },
-    { name: "Group F", value: 4800 },
-];
 
 export default class Modal extends React.Component {
     render() {
@@ -35,48 +28,85 @@ export default class Modal extends React.Component {
                     <div className="w-[40px] h-[40px] bg-[#3f3f3f] rounded-full"></div>
                 </div>
                 <div className="grid grid-cols-4 gap-4 w-[100%] bg-slate-900 p-5">
-                    <div className="p-5 text-slate-50 bg-slate-700 rounded-md bg-opacity-25 flex justify-between items-center">
+                    <div className="p-5 bg-slate-700 rounded-md bg-opacity-25 flex justify-between items-center">
                         <div className="info">
-                            <div className="">{data.velocidade}</div>
-                            <div className="">Velocidade</div>
+                            <div className="text-slate-50 font-bold text-lg">
+                                {data.velocidade}
+                            </div>
+                            <div className="text-slate-500 font-semmibold text-sm">
+                                Velocidade
+                            </div>
                         </div>
-                        <IoSpeedometer className="text-[30px]" />
+                        <div className="flex items-center justify-center p-2 bg-teal-600/20 rounded-lg">
+                            <IoSpeedometer className="text-[20px] text-teal-600" />
+                        </div>
                     </div>
-                    <div className="p-3 text-slate-50 bg-slate-700 rounded-md bg-opacity-25 flex justify-between items-center">
+                    <div className="p-3 bg-slate-700 rounded-md bg-opacity-25 flex justify-between items-center">
                         <div className="info">
-                            <div className="">{data.aceleracao}</div>
-                            <div className="">Aceleracao</div>
+                            <div className="text-slate-50 font-bold text-lg">
+                                {data.aceleracao}
+                            </div>
+                            <div className="text-slate-500 font-semmibold text-sm">
+                                Aceleracao
+                            </div>
                         </div>
-                        <MdTimer className="text-[30px]" />
+                        <div className="flex items-center justify-center p-2 bg-lime-600/20 rounded-lg">
+                            <MdTimer className="text-[20px] text-lime-600" />
+                        </div>
                     </div>
-                    <div className="p-3 text-slate-50 bg-slate-700 rounded-md bg-opacity-25 flex justify-between items-center">
+                    <div className="p-3 bg-slate-700 rounded-md bg-opacity-25 flex justify-between items-center">
                         <div className="info">
-                            <div className="">{data.tracao}</div>
-                            <div className="">Tracao </div>
+                            <div className="text-slate-50 font-bold text-lg">
+                                {data.tracao[1]}
+                            </div>
+                            <div className="text-slate-500 font-semmibold text-sm">
+                                Tracao{" "}
+                            </div>
                         </div>
-                        <HiWrenchScrewdriver className="text-[30px]" />
+                        <div className="flex items-center justify-center p-2 bg-orange-600/20 rounded-lg">
+                            <HiWrenchScrewdriver className="text-[20px] text-orange-600" />
+                        </div>
                     </div>
-                    <div className="p-3 text-slate-50 bg-slate-700 rounded-md bg-opacity-25 flex justify-between items-center">
+                    <div className="p-3 bg-slate-700 rounded-md bg-opacity-25 flex justify-between items-center">
                         <div className="info">
-                            <div className="">{data.frenagem}</div>
-                            <div className="">Frenagem</div>
+                            <div className="text-slate-50 font-bold text-lg">
+                                {data.frenagem[2]}
+                            </div>
+                            <div className="text-slate-500 font-semmibold text-sm">
+                                Frenagem
+                            </div>
                         </div>
-                        <MdPanTool className="text-[30px]" />
+                        <div className="flex items-center justify-center p-2 bg-pink-600/20 rounded-lg">
+                            <div className="flex items-center justify-center p-2 bg-rose-600/20 rounded-lg">
+                                <MdPanTool className="text-[20px] text-rose-600" />
+                            </div>
+                        </div>
                     </div>
-                    <div className="p-3 text-slate-50 col-span-3 bg-slate-700 h-[300px] rounded-md bg-opacity-25">
+                    <div className="p-3 text-slate-50 col-span-3 bg-slate-700 h-full rounded-md bg-opacity-25">
                         <Graph />
                     </div>
+                    <div className="grid grid-cols-1 gap-4">
                     <div className="p-3 text-slate-50 bg-slate-700 rounded-md bg-opacity-25">
-                        <div className="info flex justify-between items-center">
-                        <FaCircleInfo className="text-[18px]" />
-                        Informacoes do veiculo
+                            <div className="info flex justify-between items-center">
+                                <FaCircleInfo className="text-[18px]" />
+                                Informacoes do veiculo
+                            </div>
+                            <div className="carro">Nome: {data.carro}</div>
+                            <div className="categoria">
+                                Categoria: {data.categoria}
+                            </div>
+                            <div className="classe">Classe: {data.classe}</div>
+                            <div className="placa">Placa: {data.placa}</div>
                         </div>
-                        <div className="carro">Nome: {data.carro}</div>
-                        <div className="categoria">
-                            Categoria: {data.categoria}
+                        <div className="p-3 text-slate-50 bg-slate-700 rounded-md bg-opacity-25">
+                            <div className="info flex justify-between items-center">
+                                <FaCircleInfo className="text-[18px]" />
+                                Resultado
+                            </div>
+                            <div className="carro">Nome: {data.carro}</div>
+                            <div className="classe">Classe: {data.novaClase}</div>
+                            <div className="placa">Nota: {data.nota}</div>
                         </div>
-                        <div className="classe">Classe: {data.classe}</div>
-                        <div className="placa">Placa: {data.placa}</div>
                     </div>
                 </div>
                 <div className="px-5">
