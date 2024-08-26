@@ -1,0 +1,16 @@
+{
+    "compilerOptions": {
+        "target": "ESNext",
+        "strict": true,
+        "esModuleInterop": true,
+        "allowSyntheticDefaultImports": true,
+        "module": "CommonJS",
+        "types": ["@citizenfx/client", "@types/node"],
+        "lib": ["ESNext"],
+        "paths": {
+            "@shared/*": ["../shared/*"]
+        }
+    },
+    "include": ["./**/*"],
+    "exclude": ["**/node_modules", "**/__tests__/*"]
+}
