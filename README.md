@@ -1,15 +1,11 @@
-# FiveM React, Tailwind and Vite module template
-
-Based on [mpcmarques/react-vite-tailwindcss-i18next-starter](https://github.com/mpcmarques/react-vite-tailwindcss-i18next-starter)
+# FiveM React, Tailwind and Vite dashboard template
 
 A starter template for a FiveM module using:
 
 * React as the components library
 * Tailwindcss as the design library
-* i18next as the internationalization library
 
 Also they come with prettier and eslint configured.
-
 
 # How to use
 
