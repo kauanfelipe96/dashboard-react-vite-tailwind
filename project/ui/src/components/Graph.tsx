@@ -64,6 +64,7 @@ export default class Example extends PureComponent {
           }}
         >
           <Tooltip />
+          <Legend />
           <Line type="monotone" dataKey="torque" stroke="#8884d8" strokeWidth={2} />
           <Line type="monotone" dataKey="potencia" stroke="#991b1b" strokeWidth={2} />
         </LineChart>
