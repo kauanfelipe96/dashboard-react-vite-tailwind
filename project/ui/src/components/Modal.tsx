@@ -11,8 +11,8 @@ import {
     FaWifi,
 } from "react-icons/fa6";
 import { IoBatteryFull } from "react-icons/io5";
-import { PieChart, Pie, Legend, Tooltip, ResponsiveContainer } from "recharts";
 import moment from "moment";
+import CountUp from "react-countup";
 
 const data = {
     carro: "Comet",
@@ -60,7 +60,14 @@ const Modal: React.FC = () => {
                     <div className="p-5 bg-slate-700 rounded-md bg-opacity-25 flex justify-between items-center">
                         <div className="info">
                             <div className="text-slate-50 font-bold text-lg">
-                                {show && data.velocidade}
+                                {show ? (
+                                    <CountUp
+                                        end={data.velocidade}
+                                        duration={5}
+                                    />
+                                ) : (
+                                    "-"
+                                )}
                             </div>
                             <div className="text-slate-500 font-semibold text-sm">
                                 Velocidade
@@ -73,7 +80,14 @@ const Modal: React.FC = () => {
                     <div className="p-3 bg-slate-700 rounded-md bg-opacity-25 flex justify-between items-center">
                         <div className="info">
                             <div className="text-slate-50 font-bold text-lg">
-                                {show && data.aceleracao}
+                                {show ? (
+                                    <CountUp
+                                        end={data.aceleracao}
+                                        duration={5}
+                                    />
+                                ) : (
+                                    "-"
+                                )}
                             </div>
                             <div className="text-slate-500 font-semibold text-sm">
                                 Aceleracao
@@ -86,10 +100,14 @@ const Modal: React.FC = () => {
                     <div className="p-3 bg-slate-700 rounded-md bg-opacity-25 flex justify-between items-center">
                         <div className="info">
                             <div className="text-slate-50 font-bold text-lg">
-                                {show && data.tracao}
+                                {show ? (
+                                    <CountUp end={data.tracao} duration={5} />
+                                ) : (
+                                    "-"
+                                )}
                             </div>
                             <div className="text-slate-500 font-semibold text-sm">
-                                Tracao{" "}
+                                Tracao
                             </div>
                         </div>
                         <div className="flex items-center justify-center p-2 bg-orange-600/20 rounded-lg">
@@ -99,7 +117,11 @@ const Modal: React.FC = () => {
                     <div className="p-3 bg-slate-700 rounded-md bg-opacity-25 flex justify-between items-center">
                         <div className="info">
                             <div className="text-slate-50 font-bold text-lg">
-                                {show && data.frenagem}
+                                {show ? (
+                                    <CountUp end={data.frenagem} duration={5} />
+                                ) : (
+                                    "-"
+                                )}
                             </div>
                             <div className="text-slate-500 font-semibold text-sm">
                                 Frenagem
@@ -126,7 +148,7 @@ const Modal: React.FC = () => {
                                 <div>
                                     <div className="info mb-2">
                                         <div className="text-slate-50 font-bold text-lg">
-                                            {show && data.carro}
+                                            {show ? data.carro : "-"}
                                         </div>
                                         <div className="text-slate-500 font-semibold text-sm">
                                             Nome
@@ -134,7 +156,7 @@ const Modal: React.FC = () => {
                                     </div>
                                     <div className="info">
                                         <div className="text-slate-50 font-bold text-lg">
-                                            {show && data.placa}
+                                            {show ? data.placa : "-"}
                                         </div>
                                         <div className="text-slate-500 font-semibold text-sm">
                                             Placa
@@ -154,7 +176,7 @@ const Modal: React.FC = () => {
                                 <div>
                                     <div className="info mb-2">
                                         <div className="text-slate-50 font-bold text-lg">
-                                            {show && data.nota}
+                                            {show ? data.nota : "-"}
                                         </div>
                                         <div className="text-slate-500 font-semibold text-sm">
                                             Nota
