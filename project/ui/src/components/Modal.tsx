@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Graph from "./Graph";
 import { IoSpeedometer } from "react-icons/io5";
 import { MdTimer } from "react-icons/md";
@@ -15,21 +15,35 @@ import moment from "moment";
 import CountUp from "react-countup";
 
 const data = {
-    carro: "Comet",
-    classe: "A+",
-    placa: "AHV-4169",
-    velocidade: "91",
-    aceleracao: "85",
-    tracao: "82",
-    frenagem: "90",
-    nota: 89,
-    novaClase: "S",
+    model: "Comet",
+    class: "A+",
+    plate: "AHV-4169",
+    velocity: "91",
+    acceleration: "85",
+    traction: "82",
+    brakes: "90",
+    score: 89,
+    newClass: "S",
 };
 
 const Modal: React.FC = () => {
     const [show, setShow] = useState<boolean>(false);
+    const [showNewClass, setShowNewClass] = useState<boolean>(false);
+
+    useEffect(() => {
+        if (show) {
+            const timer = setTimeout(() => {
+                setShowNewClass(true);
+            }, 20000);
+
+            return () => clearTimeout(timer);
+        } else {
+            setShowNewClass(false);
+        }
+    }, [show]);
+
     return (
-        <div className="w-[50%] p-5 bg-neutral-950 rounded-3xl flex items-center justify-start">
+        <div className="w-[50%] p-5 bg-neutral-950 rounded-xl flex items-center justify-start">
             <div className="w-[100%] bg-slate-900 pb-5">
                 <div className="flex justify-end items-center text-slate-50 bg-black/20 px-5 py-1">
                     <div className="flex items-center justify-start gap-1 ">
@@ -62,8 +76,8 @@ const Modal: React.FC = () => {
                             <div className="text-slate-50 font-bold text-lg">
                                 {show ? (
                                     <CountUp
-                                        end={data.velocidade}
-                                        duration={5}
+                                        end={data.velocity}
+                                        duration={20}
                                     />
                                 ) : (
                                     "-"
@@ -82,8 +96,8 @@ const Modal: React.FC = () => {
                             <div className="text-slate-50 font-bold text-lg">
                                 {show ? (
                                     <CountUp
-                                        end={data.aceleracao}
-                                        duration={5}
+                                        end={data.acceleration}
+                                        duration={20}
                                     />
                                 ) : (
                                     "-"
@@ -101,7 +115,7 @@ const Modal: React.FC = () => {
                         <div className="info">
                             <div className="text-slate-50 font-bold text-lg">
                                 {show ? (
-                                    <CountUp end={data.tracao} duration={5} />
+                                    <CountUp end={data.traction} duration={20} />
                                 ) : (
                                     "-"
                                 )}
@@ -118,7 +132,10 @@ const Modal: React.FC = () => {
                         <div className="info">
                             <div className="text-slate-50 font-bold text-lg">
                                 {show ? (
-                                    <CountUp end={data.frenagem} duration={5} />
+                                    <CountUp
+                                        end={data.brakes}
+                                        duration={20}
+                                    />
                                 ) : (
                                     "-"
                                 )}
@@ -141,14 +158,14 @@ const Modal: React.FC = () => {
                             <div className="flex items-center gap-4">
                                 <div className="flex items-center justify-center w-[90px] h-[90px] bg-violet-600/20 rounded-lg">
                                     <div className="text-[60px] font-bold text-violet-400">
-                                        {show && data.classe}
+                                        {show && data.class}
                                     </div>
                                 </div>
 
                                 <div>
                                     <div className="info mb-2">
                                         <div className="text-slate-50 font-bold text-lg">
-                                            {show ? data.carro : "-"}
+                                            {show ? data.model : "-"}
                                         </div>
                                         <div className="text-slate-500 font-semibold text-sm">
                                             Nome
@@ -156,7 +173,7 @@ const Modal: React.FC = () => {
                                     </div>
                                     <div className="info">
                                         <div className="text-slate-50 font-bold text-lg">
-                                            {show ? data.placa : "-"}
+                                            {show ? data.plate : "-"}
                                         </div>
                                         <div className="text-slate-500 font-semibold text-sm">
                                             Placa
@@ -169,14 +186,21 @@ const Modal: React.FC = () => {
                             <div className="flex items-center gap-4">
                                 <div className="flex items-center justify-center w-[90px] h-[90px] bg-indigo-600/20 rounded-lg">
                                     <div className="text-[60px] font-bold text-indigo-400">
-                                        {show && data.novaClase}
+                                        {showNewClass && data.newClass}
                                     </div>
                                 </div>
 
                                 <div>
                                     <div className="info mb-2">
                                         <div className="text-slate-50 font-bold text-lg">
-                                            {show ? data.nota : "-"}
+                                            {showNewClass ? (
+                                                <CountUp
+                                                    end={data.score}
+                                                    duration={20}
+                                                />
+                                            ) : (
+                                                "-"
+                                            )}
                                         </div>
                                         <div className="text-slate-500 font-semibold text-sm">
                                             Nota
