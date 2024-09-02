@@ -1,17 +1,25 @@
 fx_version 'cerulean'
+games { "gta5" }
 
-games {"gta5"}
-
-author "Codex <mateus@codexfactory.com.br>"
-description "FiveM Vite TS + ReactJS Template"
+name 'Dashboard'
+description 'Custom dashboard for RPRP'
+author "DAMIGHTY"
+description "React + Vite, TS"
 version '1.0.0'
 
 lua54 'yes'
 
-ui_page 'project/ui/build/index.html'
+ui_page 'ui/build/index.html'
 
-client_script "project/build/client/**/*"
-shared_script 'project/build/shared/**/*'
-server_scripts {'@oxmysql/lib/MySQL.ts', "project/build/server/**/*"}
+client_script "client/**/*"
+shared_scripts { '@ox_lib/init.lua', 'shared/**/*' }
+server_scripts { '@oxmysql/lib/MySQL.lua', "server/**/*" }
 
-files {'project/ui/build/index.html', 'project/ui/build/**/*'}
+files {
+    'ui/build/*.html',
+    'ui/build/**/*',
+}
+
+dependencies {
+    'ox_lib',
+}
