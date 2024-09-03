@@ -195,7 +195,22 @@ RegisterNetEvent('rp_dyno:client:gambiarra',function()
         action = "dashboard:show",
         data = true
       }))
-    
+
+    SendNuiMessage(json.encode({
+        action = "dashboard:setDashboardData",
+        data = {
+            model = "Comet",
+            class = "A+",
+            plate =  "AHV-4169",
+            velocity =  "A+",
+            acceleration = "S",
+            traction = "C+",
+            brakes = "A",
+            score = 89,
+            newClass =  "S",
+        },
+      }))
+
       SetNuiFocus(true, true)
 end)
 

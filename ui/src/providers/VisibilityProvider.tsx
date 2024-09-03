@@ -8,6 +8,7 @@ import React, {
 import { useNuiEvent } from "../hooks/useNuiEvent";
 import { fetchNui } from "../utils/fetchNui";
 import { isEnvBrowser } from "../utils/misc";
+import { IDashboardData } from "../types";
 
 const VisibilityCtx = createContext<VisibilityProviderValue | null>(null);
 
@@ -16,17 +17,30 @@ interface VisibilityProviderValue {
     visible: boolean;
 }
 
-// This should be mounted at the top level of your application, it is currently set to
-// apply a CSS visibility value. If this is non-performant, this should be customized.
+const startData: IDashboardData = {
+    velocity: "-",
+    acceleration: "-",
+    traction: "-",
+    brakes: "-",
+    model: "-",
+    class: "-",
+    plate: "-",
+    score: 0,
+    newClass: "-",
+};
+
 export const VisibilityProvider: React.FC<{ children: React.ReactNode }> = ({
     children,
 }) => {
     const [visible, setVisible] = useState(false);
+    const [data, setData] = useState<IDashboardData>(startData);
+    const resetData = () => {
+        setData(startData);
+    };
 
     useNuiEvent<boolean>("dashboard:show", setVisible);
 
     useEffect(() => {
-        // Only attach listener when we are visible
         if (!visible) return;
 
         const keyHandler = (e: KeyboardEvent) => {
@@ -39,6 +53,12 @@ export const VisibilityProvider: React.FC<{ children: React.ReactNode }> = ({
         window.addEventListener("keydown", keyHandler);
 
         return () => window.removeEventListener("keydown", keyHandler);
+    }, [visible]);
+
+    useEffect(() => {
+        if (!visible) {
+            resetData();
+        }
     }, [visible]);
 
     return (

@@ -14,9 +14,42 @@ interface IDashboardProps {
     data: IDashboardData;
 }
 
+
 const Dashboard: React.FC<IDashboardProps> = ({ data }) => {
+    const grades = ["D", "D+", "C", "C+", "B", "B+", "A", "A+", "S", "X"];
     const [show, setShow] = useState<boolean>(false);
     const [showNewClass, setShowNewClass] = useState<boolean>(false);
+    const [velocityGrade, setVelocityGrade] = useState("D");
+    const [accelerationGrade, setAccelerationGrade] = useState("D");
+    const [tractionGrade, setTractionGrade] = useState("D");
+    const [brakesGrade, setBrakesGrade] = useState("D");
+    const incrementGrade = () => {
+        setVelocityGrade((prev) => nextGrade(prev, data.velocity));
+        setAccelerationGrade((prev) => nextGrade(prev, data.acceleration));
+        setTractionGrade((prev) => nextGrade(prev, data.traction));
+        setBrakesGrade((prev) => nextGrade(prev, data.brakes));
+    };
+    const nextGrade = (current: string, target: string) => {
+        const currentIndex = grades.indexOf(current);
+        const targetIndex = grades.indexOf(target);
+        return currentIndex < targetIndex ? grades[currentIndex + 1] : current;
+    };
+
+    useEffect(() => {
+        let interval: NodeJS.Timeout;
+
+        if (show) {
+            interval = setInterval(() => {
+                incrementGrade();
+            }, 2000);
+
+            setTimeout(() => {
+                clearInterval(interval);
+            }, 20000);
+        }
+
+        return () => clearInterval(interval);
+    }, [show]);
 
     useEffect(() => {
         if (show) {
@@ -32,8 +65,8 @@ const Dashboard: React.FC<IDashboardProps> = ({ data }) => {
 
     return (
         <div className="h-[100vh] w-[100vw] flex items-center justify-center">
-            <div className="w-[50%] p-5 bg-neutral-950 rounded-xl flex items-center justify-start">
-                <div className="w-[100%] bg-slate-900 pb-5">
+            <div className="w-[65%] p-5 bg-neutral-950 rounded-xl flex items-center justify-start">
+                <div className="w-[100%] bg-slate-900">
                     <div className="flex justify-end items-center text-slate-50 bg-black/20 px-5 py-1">
                         <div className="flex items-center justify-start gap-1 ">
                             <span className="text-[10px] mt-1">100%</span>
@@ -45,7 +78,7 @@ const Dashboard: React.FC<IDashboardProps> = ({ data }) => {
                             </span>
                         </div>
                     </div>
-                    <div className="flex justify-between items-center mt-4 px-5">
+                    <div className="flex justify-between items-center mt-4 px-5 py-5">
                         <h1 className="text-slate-50 text-3xl font-extrabold mb-5">
                             Dashboard
                         </h1>
@@ -63,7 +96,7 @@ const Dashboard: React.FC<IDashboardProps> = ({ data }) => {
                         <div className="p-5 bg-slate-700 rounded-md bg-opacity-25 flex justify-between items-center">
                             <div className="info">
                                 <div className="text-slate-50 font-bold text-lg">
-                                    {show ? data.velocity : "-"}
+                                    {show ? velocityGrade : "-"}
                                 </div>
                                 <div className="text-slate-500 font-semibold text-sm">
                                     Velocidade
@@ -76,7 +109,7 @@ const Dashboard: React.FC<IDashboardProps> = ({ data }) => {
                         <div className="p-3 bg-slate-700 rounded-md bg-opacity-25 flex justify-between items-center">
                             <div className="info">
                                 <div className="text-slate-50 font-bold text-lg">
-                                    {show ? data.acceleration : "-"}
+                                    {show ? accelerationGrade : "-"}
                                 </div>
                                 <div className="text-slate-500 font-semibold text-sm">
                                     Aceleracao
@@ -89,7 +122,7 @@ const Dashboard: React.FC<IDashboardProps> = ({ data }) => {
                         <div className="p-3 bg-slate-700 rounded-md bg-opacity-25 flex justify-between items-center">
                             <div className="info">
                                 <div className="text-slate-50 font-bold text-lg">
-                                    {show ? data.traction : "-"}
+                                    {show ? tractionGrade : "-"}
                                 </div>
                                 <div className="text-slate-500 font-semibold text-sm">
                                     Tracao
@@ -102,7 +135,7 @@ const Dashboard: React.FC<IDashboardProps> = ({ data }) => {
                         <div className="p-3 bg-slate-700 rounded-md bg-opacity-25 flex justify-between items-center">
                             <div className="info">
                                 <div className="text-slate-50 font-bold text-lg">
-                                    {show ? data.brakes : "-"}
+                                    {show ? brakesGrade : "-"}
                                 </div>
                                 <div className="text-slate-500 font-semibold text-sm">
                                     Frenagem
@@ -147,7 +180,7 @@ const Dashboard: React.FC<IDashboardProps> = ({ data }) => {
                                 </div>
                             </div>
                             <div className="p-3 text-slate-50 bg-slate-700 rounded-md bg-opacity-25">
-                                <div className="flex items-center gap-4">
+                                <div className="flex items-center justify-center gap-4">
                                     <div className="flex items-center justify-center w-[90px] h-[90px] bg-indigo-600/20 rounded-lg">
                                         <div className="text-[60px] font-bold text-indigo-400">
                                             {showNewClass && data.newClass}
@@ -156,7 +189,7 @@ const Dashboard: React.FC<IDashboardProps> = ({ data }) => {
 
                                     <div>
                                         <div className="info mb-2">
-                                            <div className="text-slate-50 font-bold text-lg">
+                                            {/* <div className="text-slate-50 font-bold text-lg">
                                                 {showNewClass ? (
                                                     <CountUp
                                                         end={data.score}
@@ -165,7 +198,7 @@ const Dashboard: React.FC<IDashboardProps> = ({ data }) => {
                                                 ) : (
                                                     "-"
                                                 )}
-                                            </div>
+                                            </div> */}
                                             <div className="text-slate-500 font-semibold text-sm">
                                                 Nota
                                             </div>
@@ -175,7 +208,7 @@ const Dashboard: React.FC<IDashboardProps> = ({ data }) => {
                             </div>
                         </div>
                     </div>
-                    <div className="flex items-center justify-center gap-4 mt-5">
+                    <div className="flex items-center justify-center gap-4 py-10">
                         <button className="bg-blue-800 rounded-lg border-none p0 cursor-pointer outline-4 hover:bg-blue-700">
                             <span className="block p-[3px_20px] rounded-lg text-xl bg-blue-600 text-white transform -translate-y-1.5 active:transform active:-translate-y-0.5 hover:bg-blue-700 font-bold">
                                 Register

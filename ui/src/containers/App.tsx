@@ -13,7 +13,7 @@ debugData<boolean | IDashboardData>([
             class: "A+",
             plate: "AHV-4169",
             velocity: "A+",
-            acceleration: "D",
+            acceleration: "S",
             traction: "C+",
             brakes: "A",
             score: 89,
