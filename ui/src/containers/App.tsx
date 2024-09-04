@@ -17,7 +17,7 @@ debugData<boolean | IDashboardData>([
             traction: "C+",
             brakes: "A",
             score: 89,
-            newClass: "S",
+            newClass: "A",
         },
     },
 ]);

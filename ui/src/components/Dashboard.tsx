@@ -14,7 +14,6 @@ interface IDashboardProps {
     data: IDashboardData;
 }
 
-
 const Dashboard: React.FC<IDashboardProps> = ({ data }) => {
     const grades = ["D", "D+", "C", "C+", "B", "B+", "A", "A+", "S", "X"];
     const [show, setShow] = useState<boolean>(false);
@@ -34,6 +33,22 @@ const Dashboard: React.FC<IDashboardProps> = ({ data }) => {
         const targetIndex = grades.indexOf(target);
         return currentIndex < targetIndex ? grades[currentIndex + 1] : current;
     };
+
+    const changeColor = (grade:string) => {
+        const color = {
+            "D": "bg-gradient-to-tl from-red-400 to-red-900 text-[60px]",
+            "D+": "bg-gradient-to-tl from-orange-700 to-orange-900 text-[50px]",
+            "C": "bg-gradient-to-tl from-amber-600 to-amber-800 text-[60px]",
+            "C+": "bg-gradient-to-tl from-amber-400 to-yellow-600 text-[50px]",
+            "B": "bg-gradient-to-tl from-yellow-400 to-yellow-500 text-[60px]",
+            "B+": "bg-gradient-to-tl from-yellow-500 to-lime-900 text-[50px]",
+            "A": "bg-gradient-to-tl from-green-400 to-green-900 text-[60px]",
+            "A+": "bg-gradient-to-tl from-teal-500 to-teal-700 text-[50px]",
+            "S": "bg-gradient-to-tl from-sky-600 to-sky-800 text-[60px]",
+            "X": "bg-gradient-to-br from-black to-zinc-900 text-[60px]",
+        }
+        return color[grade as keyof typeof color]
+    }
 
     useEffect(() => {
         let interval: NodeJS.Timeout;
@@ -154,7 +169,7 @@ const Dashboard: React.FC<IDashboardProps> = ({ data }) => {
                             <div className="p-3 text-slate-50 bg-slate-700 rounded-md bg-opacity-25">
                                 <div className="flex items-center gap-4">
                                     <div className="flex items-center justify-center w-[90px] h-[90px] bg-violet-600/20 rounded-lg">
-                                        <div className="text-[60px] font-bold text-violet-400">
+                                        <div className="text-[50px] font-bold text-violet-400">
                                             {show && data.class}
                                         </div>
                                     </div>
@@ -179,30 +194,28 @@ const Dashboard: React.FC<IDashboardProps> = ({ data }) => {
                                     </div>
                                 </div>
                             </div>
-                            <div className="p-3 text-slate-50 bg-slate-700 rounded-md bg-opacity-25">
-                                <div className="flex items-center justify-center gap-4">
-                                    <div className="flex items-center justify-center w-[90px] h-[90px] bg-indigo-600/20 rounded-lg">
-                                        <div className="text-[60px] font-bold text-indigo-400">
-                                            {showNewClass && data.newClass}
+                            <div className="p-3 text-slate-50 bg-slate-700 rounded-md bg-opacity-25 flex items-center justify-center">
+                                <div className="flex items-center justify-center gap-8">
+                                    <div className="flex flex-col items-center justify-center">
+                                        <div className="flex items-center justify-center w-[60px] h-[60px] bg-gray-200/20 rounded-lg mb-2">
+                                            <div className="text-[30px] font-bold text-gray-400">
+                                                {showNewClass && data.class}
+                                            </div>
                                         </div>
                                     </div>
 
-                                    <div>
-                                        <div className="info mb-2">
-                                            {/* <div className="text-slate-50 font-bold text-lg">
-                                                {showNewClass ? (
-                                                    <CountUp
-                                                        end={data.score}
-                                                        duration={20}
-                                                    />
-                                                ) : (
-                                                    "-"
-                                                )}
-                                            </div> */}
-                                            <div className="text-slate-500 font-semibold text-sm">
-                                                Nota
+                                    <div className="arrow-6"></div>
+
+                                    <div className="flex flex-col items-center justify-center">
+                                        {showNewClass ? (
+                                            <div className={`flex items-center justify-center w-[90px] h-[90px] ${changeColor(data.newClass)} rounded-lg mb-2`}>
+                                                <div className=" font-bold text-gray-200">
+                                                    {data.newClass}
+                                                </div>
                                             </div>
-                                        </div>
+                                        ) : (
+                                            <div className="w-[90px] h-[90px]"></div>
+                                        )}
                                     </div>
                                 </div>
                             </div>
