@@ -7,8 +7,8 @@ import { MdPanTool } from "react-icons/md";
 import { FaPlay, FaWifi } from "react-icons/fa6";
 import { IoBatteryFull } from "react-icons/io5";
 import moment from "moment";
-import CountUp from "react-countup";
 import { IDashboardData } from "../types";
+import { fetchNui } from "../utils/fetchNui";
 
 interface IDashboardProps {
     data: IDashboardData;
@@ -34,21 +34,34 @@ const Dashboard: React.FC<IDashboardProps> = ({ data }) => {
         return currentIndex < targetIndex ? grades[currentIndex + 1] : current;
     };
 
-    const changeColor = (grade:string) => {
+    const changeColor = (grade: string) => {
         const color = {
-            "D": "bg-gradient-to-tl from-red-400 to-red-900 text-[60px]",
+            D: "bg-gradient-to-tl from-red-400 to-red-900 text-[60px]",
             "D+": "bg-gradient-to-tl from-orange-700 to-orange-900 text-[50px]",
-            "C": "bg-gradient-to-tl from-amber-600 to-amber-800 text-[60px]",
+            C: "bg-gradient-to-tl from-amber-600 to-amber-800 text-[60px]",
             "C+": "bg-gradient-to-tl from-amber-400 to-yellow-600 text-[50px]",
-            "B": "bg-gradient-to-tl from-yellow-400 to-yellow-500 text-[60px]",
+            B: "bg-gradient-to-tl from-yellow-400 to-yellow-500 text-[60px]",
             "B+": "bg-gradient-to-tl from-yellow-500 to-lime-900 text-[50px]",
-            "A": "bg-gradient-to-tl from-green-400 to-green-900 text-[60px]",
+            A: "bg-gradient-to-tl from-green-400 to-green-900 text-[60px]",
             "A+": "bg-gradient-to-tl from-teal-500 to-teal-700 text-[50px]",
-            "S": "bg-gradient-to-tl from-sky-600 to-sky-800 text-[60px]",
-            "X": "bg-gradient-to-br from-black to-zinc-900 text-[60px]",
+            S: "bg-gradient-to-tl from-sky-600 to-sky-800 text-[60px]",
+            X: "bg-gradient-to-br from-black to-zinc-900 text-[60px]",
+        };
+        return color[grade as keyof typeof color];
+    };
+
+    const handleRegister = async () => {
+        try {
+            await fetchNui("registerVehicle", {
+                model: data.model,
+                plate: data.plate,
+                newClass: data.newClass,
+            });
+            console.log("Dados enviados com sucesso!");
+        } catch (error) {
+            console.error("Erro ao enviar dados:", error);
         }
-        return color[grade as keyof typeof color]
-    }
+    };
 
     useEffect(() => {
         let interval: NodeJS.Timeout;
@@ -208,7 +221,11 @@ const Dashboard: React.FC<IDashboardProps> = ({ data }) => {
 
                                     <div className="flex flex-col items-center justify-center">
                                         {showNewClass ? (
-                                            <div className={`flex items-center justify-center w-[90px] h-[90px] ${changeColor(data.newClass)} rounded-lg mb-2`}>
+                                            <div
+                                                className={`flex items-center justify-center w-[90px] h-[90px] ${changeColor(
+                                                    data.newClass
+                                                )} rounded-lg mb-2`}
+                                            >
                                                 <div className=" font-bold text-gray-200">
                                                     {data.newClass}
                                                 </div>
@@ -222,7 +239,7 @@ const Dashboard: React.FC<IDashboardProps> = ({ data }) => {
                         </div>
                     </div>
                     <div className="flex items-center justify-center gap-4 py-10">
-                        <button className="bg-blue-800 rounded-lg border-none p0 cursor-pointer outline-4 hover:bg-blue-700">
+                        <button className="bg-blue-800 rounded-lg border-none p0 cursor-pointer outline-4 hover:bg-blue-700 onClick={handleRegister}">
                             <span className="block p-[3px_20px] rounded-lg text-xl bg-blue-600 text-white transform -translate-y-1.5 active:transform active:-translate-y-0.5 hover:bg-blue-700 font-bold">
                                 Register
                             </span>

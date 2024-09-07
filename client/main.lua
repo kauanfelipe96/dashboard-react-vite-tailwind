@@ -190,7 +190,7 @@ function setarposicao(classe,model,notafinal,plate)
     TriggerServerEvent('rp_dyno:server:registercar',data)
 end
 
-RegisterNetEvent('rp_dyno:client:gambiarra',function()
+RegisterNetEvent('rp_dyno:client:dashboard',function()
     SendNuiMessage(json.encode({
         action = "dashboard:show",
         data = true
@@ -220,5 +220,11 @@ RegisterNuiCallback('dashboard:hide',function(_,cb)
         action = "dashboard:show",
         data = false
       }))
+
+      SendNuiMessage(json.encode({
+        action = "dashboard:setDashboardData",
+        data = nil
+      }))
+      
     return cb()
 end)

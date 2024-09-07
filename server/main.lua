@@ -45,9 +45,17 @@ end)
 
 
 lib.addCommand('dashboard', {
-    help = 'teste',
+    help = 'abre interface do dinanometro',
     params = {
     },
 }, function(source, args, raw)
-    TriggerClientEvent('rp_dyno:client:gambiarra',source)
+    TriggerClientEvent('rp_dyno:client:dashboard',source)
+end)
+
+RegisterNuiCallback("registerVehicle", function(data, cb)
+    local model = data.model
+    local plate = data.plate
+    local newClass = data.newClass
+    print("Veiculo registrado: ", model, plate, newClass)
+    cb("ok")
 end)
