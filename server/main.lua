@@ -34,28 +34,10 @@ RegisterNetEvent('rp_dyno:server:registercar',function(car)
     CarRegister:RegisterCar(car)
 end)
 
-
-lib.addCommand('infocar', {
-    help = 'Pegar dados do carro',
-    params = {
-    },
-}, function(source, args, raw)
-    TriggerClientEvent('rp_dyno:client:teste',source)
-end)
-
-
 lib.addCommand('dashboard', {
     help = 'abre interface do dinanometro',
     params = {
     },
 }, function(source, args, raw)
     TriggerClientEvent('rp_dyno:client:dashboard',source)
-end)
-
-RegisterNuiCallback("registerVehicle", function(data, cb)
-    local model = data.model
-    local plate = data.plate
-    local newClass = data.newClass
-    print("Veiculo registrado: ", model, plate, newClass)
-    cb("ok")
 end)

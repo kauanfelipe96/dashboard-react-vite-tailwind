@@ -41,8 +41,8 @@ RegisterNetEvent('rp_dyno:client:plotcar',function(table)
     
     local veh = GetVehiclePedIsIn(PlayerPedId(), false)
     local plate = GetVehicleNumberPlateText(veh)
-    local mycar = lib.callback.await('rp_dyno:server:carinfos',false,plate)
-
+    --local mycar = lib.callback.await('rp_dyno:server:carinfos',false,plate)
+    local mycar = veh
     if mycar ~= nil then
         Wait(1000)
         local balance = Config.Balance        
@@ -114,8 +114,7 @@ RegisterNetEvent('rp_dyno:client:plotcar',function(table)
         --------------------------------------- INFOCAR/CALLBACK
         ---------------------------------------
         ---------------------------------------
-
-        setarposicao(classe,mycar.model,notafinal,plate)
+        setarposicao(classe,'teste',notafinal,plate)
     else
         lib.notify({
             title = "Não pode ser avaliado",
@@ -135,17 +134,6 @@ function setarposicao(classe,model,notafinal,plate)
     TaskVehicleTempAction(PlayerPedId(),veh,31,1000)
     Wait(1000)
     FreezeEntityPosition(veh,false)
-    print(classe['pointacc'])
-    
-    local graph = {
-        time0 = 0,
-        time5 = math.floor(0.05*notafinal),
-        time10 = math.floor(0.15*notafinal),
-        time15 = math.floor(0.5*notafinal),
-        time20 = math.floor(0.85*notafinal),
-        time25 = math.floor(0.95*notafinal),
-        time30 = notafinal
-    }
 
     local data = {
         model = model,
@@ -156,9 +144,19 @@ function setarposicao(classe,model,notafinal,plate)
         velocity = classe['pointvel'],
         class = classe['notafinal'],
         score = notafinal,
-        graph = graph,
+        time0 = 0,
+        time5 = math.floor(0.05*notafinal),
+        time10 = math.floor(0.15*notafinal),
+        time15 = math.floor(0.5*notafinal),
+        time20 = math.floor(0.85*notafinal),
+        time25 = math.floor(0.95*notafinal),
+        time30 = notafinal
     }
 
+    SendNUIMessage({
+        action = "open", 
+        data = data
+    })
 
     --[[local old_result = lib.callback.await('rp_dyno:server:requestresult',false,plate)
     local old_nota=old_result.notafinal
@@ -187,44 +185,93 @@ function setarposicao(classe,model,notafinal,plate)
 
     ------------------- prov
 
-    TriggerServerEvent('rp_dyno:server:registercar',data)
+    --TriggerServerEvent('rp_dyno:server:registercar',data)
 end
 
-RegisterNetEvent('rp_dyno:client:dashboard',function()
+local function showDashboard(data)
+    lib.hideTextUI()
+
+    local info = {
+        model = data.model,
+        class = data.class,
+        plate = data.plate,
+        velocity = data.velocity,
+        acceleration = data.acceleration,
+        traction = data.traction,
+        brakes = data.brakes,
+        score = data.score,
+        newClass = data.newClass,
+    }
+
     SendNuiMessage(json.encode({
         action = "dashboard:show",
         data = true
-      }))
+    }))
+
+    SetNuiFocus(true, true)
+
+    SendNuiMessage(
+        json.encode({
+            action = "dashboard:setDashboardData",
+            data = info
+        })
+    )
+
+end
+
+local function hideDashboard()
+    SendNuiMessage(
+        json.encode({
+            action = "dashboard:setDashboardData",
+            data = nil
+        })
+    )
 
     SendNuiMessage(json.encode({
-        action = "dashboard:setDashboardData",
-        data = {
-            model = "Comet",
-            class = "A+",
-            plate =  "AHV-4169",
-            velocity =  "A+",
-            acceleration = "S",
-            traction = "C+",
-            brakes = "A",
-            score = 89,
-            newClass =  "S",
-        },
-      }))
+        action = "dashboard:show",
+        data = false
+    }))
 
-      SetNuiFocus(true, true)
-end)
+    SetNuiFocus(false, false)
+    lib.hideTextUI()
+end
 
-RegisterNuiCallback('dashboard:hide',function(_,cb)
+
+RegisterNuiCallback('hideDashboard',function(_,cb)
     SetNuiFocus(false, false)
     SendNuiMessage(json.encode({
         action = "dashboard:show",
         data = false
-      }))
-
-      SendNuiMessage(json.encode({
+    }))
+    
+    SendNuiMessage(json.encode({
         action = "dashboard:setDashboardData",
         data = nil
-      }))
-      
+    }))
+    
     return cb()
 end)
+
+-- RegisterNetEvent('rp_dyno:client:dashboard',function()
+--     SendNuiMessage(json.encode({
+--         action = "dashboard:show",
+--         data = true
+--       }))
+
+--     SendNuiMessage(json.encode({
+--         action = "dashboard:setDashboardData",
+--         data = {
+--             model = "Comet",
+--             class = "A+",
+--             plate =  "AHV-4169",
+--             velocity =  "A+",
+--             acceleration = "S",
+--             traction = "C+",
+--             brakes = "A",
+--             score = 89,
+--             newClass =  "S",
+--         },
+--       }))
+
+--       SetNuiFocus(true, true)
+-- end)
